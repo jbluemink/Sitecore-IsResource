@@ -20,18 +20,7 @@ namespace IsResource.Pipelines
 
         private static void Check(Item item, GetContentEditorWarningsArgs args)
         {
-            var deletepipeline = new Sitecore.Shell.Framework.Pipelines.DeleteItems();
-            var deleteargs = new ClientPipelineArgs();
-            deleteargs.Parameters["database"] = item.Database.Name;
-            deleteargs.Parameters["items"] = item.ID.ToString();
-
-            //temporarily suspending alerts, to ignore alerts from the FilterResourceItems
-            var OutputEnabled = WebUtil.GetItemsValue("SC_SHEERCOMMANDSENABLED");
-            WebUtil.SetItemsValue("SC_SHEERCOMMANDSENABLED",(int)0);
-            deletepipeline.FilterResourceItems(deleteargs);
-            WebUtil.SetItemsValue("SC_SHEERCOMMANDSENABLED", OutputEnabled);
-
-            if (deleteargs.Aborted)
+            if (IsResourceItem.IsResource(item))
             {
                 GetContentEditorWarningsArgs.ContentEditorWarning warning = args.Add();
 

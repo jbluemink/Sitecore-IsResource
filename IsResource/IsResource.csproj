@@ -216,6 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\ToggleReadOnly.cs" />
+    <Compile Include="IsResourceItem.cs" />
     <Compile Include="Pipelines\IsResource.cs" />
     <Compile Include="Pipelines\ResourceCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
