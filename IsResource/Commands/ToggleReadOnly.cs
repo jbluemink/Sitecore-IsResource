@@ -3,6 +3,7 @@ using Sitecore;
 using Sitecore.Data.Items;
 using Sitecore.Diagnostics;
 using Sitecore.Shell.Framework.Commands;
+using Sitecore.Web;
 using Sitecore.Web.UI.Sheer;
 
 namespace IsResource.Commands
@@ -72,22 +73,13 @@ namespace IsResource.Commands
             var deleteargs = new ClientPipelineArgs();
             deleteargs.Parameters["database"] = item.Database.Name;
             deleteargs.Parameters["items"] = item.ID.ToString();
-            var orgClientPage = Context.ClientPage;
 
-            Context.ClientPage = new ClientPage();
+            var OutputEnabled = WebUtil.GetItemsValue("SC_SHEERCOMMANDSENABLED");
+            WebUtil.SetItemsValue("SC_SHEERCOMMANDSENABLED", (int)0);
+            deletepipeline.FilterResourceItems(deleteargs);
+            WebUtil.SetItemsValue("SC_SHEERCOMMANDSENABLED", OutputEnabled);
 
-            bool aborted = false;
-            try
-            {
-                deletepipeline.FilterResourceItems(deleteargs);
-            }
-            catch (NullReferenceException)
-            {
-                aborted = true;
-            }
-
-            Context.ClientPage = orgClientPage;
-            if (deleteargs.Aborted || aborted)
+            if (deleteargs.Aborted)
             {
                 return true;
             }

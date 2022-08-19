@@ -1,8 +1,8 @@
-﻿using Sitecore;
-using Sitecore.Data.Items;
+﻿using Sitecore.Data.Items;
 using Sitecore.Pipelines.GetContentEditorWarnings;
+using Sitecore.Web;
 using Sitecore.Web.UI.Sheer;
-using System;
+
 
 namespace IsResource.Pipelines
 {
@@ -24,20 +24,14 @@ namespace IsResource.Pipelines
             var deleteargs = new ClientPipelineArgs();
             deleteargs.Parameters["database"] = item.Database.Name;
             deleteargs.Parameters["items"] = item.ID.ToString();
-            var orgClientPage = Context.ClientPage;
-            Context.ClientPage = new ClientPage();
-            bool aborted = false;
-            try
-            {
-                deletepipeline.FilterResourceItems(deleteargs);
-            }
-            catch (NullReferenceException)
-            {
-                aborted = true;
-            }
 
-            Context.ClientPage = orgClientPage;
-            if (deleteargs.Aborted || aborted)
+            //temporarily suspending alerts, to ignore alerts from the FilterResourceItems
+            var OutputEnabled = WebUtil.GetItemsValue("SC_SHEERCOMMANDSENABLED");
+            WebUtil.SetItemsValue("SC_SHEERCOMMANDSENABLED",(int)0);
+            deletepipeline.FilterResourceItems(deleteargs);
+            WebUtil.SetItemsValue("SC_SHEERCOMMANDSENABLED", OutputEnabled);
+
+            if (deleteargs.Aborted)
             {
                 GetContentEditorWarningsArgs.ContentEditorWarning warning = args.Add();
 
