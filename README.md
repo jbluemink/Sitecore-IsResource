@@ -13,3 +13,6 @@ For Developers in the Content Editor.
 
 [Read more on](https://uxbee.nl/actueel/items-as-resources-by-sitecore-part-1)
 
+
+See also [Find overwritten resource items - Sitecore PowerShell Report script - Sitecore IAR items](https://gist.github.com/jbluemink/ac0851a20a3e94a25a6d998dcd25f466)  and [Items as resources by Sitecore part 2: reports](https://uxbee.nl/actueel/items-as-resources-by-sitecore-part-2)
+For the PowerShell rapport.
